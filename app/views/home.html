@@ -10,14 +10,14 @@
             </md-icon>
         </md-button>
 
-        <h2>Angular Material Sidenav</h2>
+        <h2>Brand Name</h2>
 
         <span flex></span>
     </div>
 </md-toolbar>
 
 <div class="demo-md-panel-animation md-padding" >
-   <h2>Animations</h2>
+   <h2>FAQ Editor</h2>
    <md-content>
 
    	 <md-toolbar>
@@ -26,6 +26,45 @@
 			  Go Back
 			</md-button>
 			
+		    <md-button class="md-raised" aria-label="Learn More">
+              Add Category
+           </md-button>
+
+		    <md-button class="md-raised" aria-label="Learn More">
+              Add FAQ
+           </md-button>
+
+            <div class="menu-demo-container" layout-align="center center" layout="column">
+			<md-menu>
+			      <md-button aria-label="Open phone interactions menu" class="" ng-click="openMenu($mdOpenMenu, $event)">
+			        <md-icon md-menu-origin="" md-svg-icon="call:phone"></md-icon>   
+			        Action 
+			      </md-button>
+			      <md-menu-content >
+			        <md-menu-item>
+			          <md-button ng-click="">
+			            <md-icon md-svg-icon="call:dialpad" md-menu-align-target=""></md-icon>
+			            Redial pp
+			          </md-button>
+			        </md-menu-item>   
+			        <md-menu-item>
+			          <md-button disabled="disabled" ng-click="checkVoicemail()">
+			            <md-icon md-svg-icon="call:voicemail"></md-icon>
+			            Check voicemail
+			          </md-button>
+			        </md-menu-item>
+			        <md-menu-divider></md-menu-divider>
+			        <md-menu-item>
+			          <md-button ng-click="toggleNotifications()">
+			            <md-icon md-svg-icon="social:notifications-{{notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+			            {{notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+			          </md-button>
+			        </md-menu-item>  
+			      </md-menu-content>
+			    </md-menu>
+
+             </div>
+
 			<span flex></span>
 			
 			<ul class="nav navbar-nav">
@@ -49,15 +88,20 @@
    <table st-table="rowCollection" class="table table-striped">
 	<thead>
 	<tr>
-		<th>first name</th>
-		<th>last name</th>
-		<th>birth date</th>
-		<th>balance</th>
+	    <td></td>
+		<th>Type</th>
+		<th>Name</th>
+		<th>Date Modified</th>
+		<th></th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr ng-repeat="row in rowCollection">
-		 <td><span style="" class="glyphicon glyphicon-{{row.Type == 'Cat' ? 'folder-open' : 'file'}}"></span></td>
+	     <td><md-checkbox md-no-ink aria-label="select" ng-model="data.cb5" class="md-primary">
+            
+          </md-checkbox>
+          </td>
+		 <td><span  class="glyphicon glyphicon-{{row.Type == 'Cat' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span></td>
                             <td><a href='#'>{{row.Name}}</a></td>
                             <td>{{row.Modified}}</td>
                             <td>

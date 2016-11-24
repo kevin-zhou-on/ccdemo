@@ -21,6 +21,7 @@ angular
         'ngMaterial',
         'ui.router',
         'sasrio.angular-material-sidenav',
+        'material.svgAssetsCache'
 		
     ])
     .config([
@@ -29,18 +30,24 @@ angular
         '$urlRouterProvider',
         '$stateProvider',
         'ssSideNavSectionsProvider',
+        '$mdIconProvider',
         function (
             $mdThemingProvider,
             $locationProvider,
             $urlRouterProvider,
             $stateProvider,
-            ssSideNavSectionsProvider) {
+            ssSideNavSectionsProvider,
+            $mdIconProvider) {
 
             $mdThemingProvider
                 .theme('default')
                 .primaryPalette('light-blue', {
                     'default': '700'
                 });
+
+            $mdIconProvider
+                  .iconSet("call", 'img/icons/sets/communication-icons.svg', 24)
+                  .iconSet("social", 'img/icons/sets/social-icons.svg', 24);
 
             $urlRouterProvider.otherwise(function () {
                 return '/';
@@ -71,22 +78,14 @@ angular
                 name: 'common.toggle1.item1',
                 url: '/item1',
                 templateUrl: 'views/default.html',
-                controller: function ($scope) {
-                    $scope.model = {
-                        title: 'Hello Toogle 1 Item 1'
-                    };
-                }
+                controller:  'FaqCtrl'
             });
 
             $stateProvider.state({
                 name: 'common.toggle1.item2',
                 url: '/item2',
                 templateUrl: 'views/default.html',
-                controller: function ($scope) {
-                    $scope.model = {
-                        title: 'Hello Toogle 1 Item 2'
-                    };
-                }
+                controller: 'FaqCtrl'
             });
 
             $stateProvider.state({
@@ -115,11 +114,7 @@ angular
                 name: 'common.link2',
                 url: '/link2',
                 templateUrl: 'views/default.html',
-                controller: function ($scope) {
-                    $scope.model = {
-                        title: 'Hello Link 2'
-                    };
-                }
+                controller:  'FaqCtrl'
             });
 
             $stateProvider.state({
@@ -192,11 +187,21 @@ angular
             });
 
             ssSideNavSectionsProvider.initWithTheme($mdThemingProvider);
-            ssSideNavSectionsProvider.initWithSections([{
+            ssSideNavSectionsProvider.initWithSections([
+                  {
+                        id: 'link_home',
+                        name: 'Home ',
+                        state: 'common.home',
+                        type: 'link',
+                        icon: 'fa fa-home'
+                    }, 
+                {
                 id: 'toogle_1',
                 name: 'Section Heading 1',
                 type: 'heading',
-                children: [{
+                children: [
+                    
+                {
                     name: 'Toogle 1',
                     type: 'toggle',
                     pages: [{
@@ -221,8 +226,8 @@ angular
                 type: 'link',
                 icon: 'fa fa-check'
             }, {
-                id: 'link_2',
-                name: 'Link 2',
+                id: 'link_faq',
+                name: 'FQA Editor',
                 state: 'common.link2',
                 type: 'link'
             }, {

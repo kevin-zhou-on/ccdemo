@@ -20,6 +20,18 @@ angular.module('demoApp')
             $state,
             ssSideNav) {
 
+   var originatorEv;
+
+    $scope.openMenu = function($mdOpenMenu, ev) {
+      originatorEv = ev;
+      $mdOpenMenu(ev);
+    };
+
+    $scope.notificationsEnabled = true;
+    $scope.toggleNotifications = function() {
+      $scope.notificationsEnabled = !$scope.notificationsEnabled;
+    };
+
 			 $scope.rowCollection = [
        
      	   { id: "1", Type: "Cat", Name: "Cat 1", Modified: '2016/03/01'},
