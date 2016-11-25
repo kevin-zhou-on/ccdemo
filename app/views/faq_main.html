@@ -16,7 +16,8 @@
     </div>
 </md-toolbar>
 
-<div class="demo-md-panel-animation md-padding"  ng-controller="FaqCtrl as ctrl">
+
+  <md-content flex style="border: 1px solid firebrick;" layout="column"  ng-controller="FaqCtrl as ctrl">
    <h2>FAQ Editor</h2>
    <md-content style="overflow: hidden;">
 
@@ -104,12 +105,14 @@
 		</md-toolbar>
  </md-content>
  
-   <div layout="row">
+ 
+    <md-content flex layout="row" layout-align="center">
+   
    
    <table st-table="rowCollection" class="table table-striped">
 	<thead>
 	<tr>
-	    <td></td>
+	    <th><md-checkbox md-no-ink aria-label="select" class="md-primary"></th>
 		<th>Type</th>
 		<th>Name</th>
 		<th>Date Modified</th>
@@ -140,7 +143,6 @@
 	</tr>
 	</tbody>
 </table>
-   </div>
+   </md-content>
 </div>
-
-</div>
+  </md-content>

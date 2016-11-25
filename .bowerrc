@@ -1,4 +1,6 @@
 {
-  "directory": "bower_components"
+  "directory": "bower_components",
+      "proxy": "http://zhouk2:${PASS}@204.40.130.129:3128/",
+  "https-proxy":"http://zhouk2:${PASS}@204.40.130.129:3128/"
  
 }

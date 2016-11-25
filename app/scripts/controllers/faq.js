@@ -49,7 +49,11 @@ angular.module('demoApp')
             { id: "4", Type: "FAQ", Name: "FAQ 1", Modified: '2016/01/01'},
             { id: "5", Type: "FAQ", Name: "FAQ 2", Modified: '2016/03/01'},
             { id: "6", Type: "FAQ", Name: "FAQ 3", Modified: '2016/01/01'},
-            { id: "7", Type: 'FAQ', Name: "FAQ 4", Modified: '2016/04/01'}
+            { id: "7", Type: 'FAQ', Name: "FAQ 4", Modified: '2016/04/01'},
+            { id: "8", Type: 'FAQ', Name: "FAQ 5", Modified: '2016/04/01'},
+            { id: "9", Type: 'FAQ', Name: "FAQ 6", Modified: '2016/04/01'},
+            { id: "10", Type: 'FAQ', Name: "FAQ 7", Modified: '2016/04/01'},
+            { id: "11", Type: 'FAQ', Name: "FAQ 8", Modified: '2016/04/01'}
             
           ];
 
