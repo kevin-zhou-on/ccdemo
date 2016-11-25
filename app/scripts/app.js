@@ -21,7 +21,8 @@ angular
         'ngMaterial',
         'ui.router',
         'sasrio.angular-material-sidenav',
-        'material.svgAssetsCache'
+        'material.svgAssetsCache',
+		'md.data.table'
 		
     ])
     .config([

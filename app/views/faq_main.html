@@ -88,61 +88,79 @@
               Export
            </md-button>
 
-			<!--
-			<ul class="nav navbar-nav">
-                            <li><button type="button" class="btn btn-warning navbar-btn" ><span class="glyphicon glyphicon-import"></span>Import</button></li>
-                            <li><button type="button" class="btn btn-warning navbar-btn" ><span class="glyphicon glyphicon-export"></span>Export</button></li>
-
-             </ul>
-			-->
-			 
-			<!--
-			<md-button class="md-fab md-mini" aria-label="Favorite">
-			  <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-			</md-button>
-			-->
+		
 		  </div>
 		</md-toolbar>
  </md-content>
  
  
-    <md-content flex layout="row" layout-align="center">
-   
-   
-   <table st-table="rowCollection" class="table table-striped">
-	<thead>
-	<tr>
-	    <th><md-checkbox md-no-ink aria-label="select" class="md-primary"></th>
-		<th>Type</th>
-		<th>Name</th>
-		<th>Date Modified</th>
-		<th></th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr ng-repeat="row in rowCollection">
-	     <td><md-checkbox md-no-ink aria-label="select" ng-model="data.cb5" class="md-primary">
-            
-          </md-checkbox>
-          </td>
-		 <td><span  class="glyphicon glyphicon-{{row.Type == 'Cat' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span></td>
-                            <td><a href='#'>{{row.Name}}</a></td>
-                            <td>{{row.Modified}}</td>
-                            <td>
-                                <a href="" ng-click="ctrl.openFaqDialog($event)">
+      <md-card>
+        <!--
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+          <div class="md-toolbar-tools">
+            <span>Nutrition</span>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="loadStuff()">
+              <md-icon>refresh</md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+         
+        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+          <div class="md-toolbar-tools">
+            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+          </div>
+        </md-toolbar>
+        -->
+        <md-table-container>
+          <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
+            <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
+              <tr md-row>
+                <th md-column md-order-by="type"><span>Type</span></th>
+                <th md-column md-order-by="name"><span>Name</span></th>
+                <th md-column md-date md-order-by="modified" md-desc><span>Date Modified</span></th>
+				<!--
+                <th md-column md-numeric md-order-by="carbs.value"><span>Carbs (g)</span></th>
+                <th md-column md-numeric md-order-by="protein.value"><span>Protein (g)</span></th>
+                <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium (mg)</span></th>
+                <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium (%)</span></th>
+                <th md-column md-numeric md-order-by="iron.value" hide-gt-xs show-gt-lg><span>Iron (%)</span></th>
+                <th md-column md-order-by="comment">
+                  <md-icon>comments</md-icon>
+                  <span>Comments</span>
+                </th>
+				-->
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                <td md-cell>
+                   <span  class="glyphicon glyphicon-{{row.type == 'Cat' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span>
+                </td>
+                <td md-cell>{{row.name}}</td>
+                <td md-cell>{{row.modified}}</td>
+				<td md-cell>
+				    <a href="" ng-click="ctrl.openFaqDialog($event)">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
-                                </a>
-                                <!--	
-                                 <md-button class="md-primary md-raised" ng-click="ctrl.openFaqDialog($event)">
-							      Custom Dialog
-							    </md-button>
-							    -->
-                            </td>
-		
-		
-	</tr>
-	</tbody>
-</table>
-   </md-content>
-</div>
+                     </a>
+				</td>
+				<!--
+                <td md-cell>{{dessert.fat.value | number: 2}}</td>
+                <td md-cell>{{dessert.carbs.value}}</td>
+                <td md-cell>{{dessert.protein.value | number: 2}}</td>
+                <td md-cell hide-gt-xs show-gt-md>{{dessert.sodium.value}}</td>
+                <td md-cell hide-gt-xs show-gt-lg>{{dessert.calcium.value}}%</td>
+                <td md-cell hide-gt-xs show-gt-lg>{{dessert.iron.value}}%</td>
+                <td md-cell ng-click="editComment($event, dessert)" ng-class="{'md-placeholder': !dessert.comment}">
+                  {{dessert.comment || 'Add a comment'}}
+                </td>
+				-->
+              </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+
+        <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{items.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+      </md-card>
+ 
   </md-content>

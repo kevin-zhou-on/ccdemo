@@ -15,14 +15,32 @@ angular.module('demoApp')
         '$state',
         'ssSideNav',
         '$mdDialog',
+		'$mdEditDialog',
         function (
-            $scope,
-            $timeout,
-            $state,
-            ssSideNav,
-             $mdDialog
+            $scope, $timeout, $state, ssSideNav, $mdDialog, $mdEditDialog
             ) {
 
+		 $scope.selected = [];
+		  $scope.limitOptions = [5, 10, 15];
+		  
+		  $scope.options = {
+			rowSelection: true,
+			multiSelect: true,
+			autoSelect: true,
+			decapitate: false,
+			largeEditDialog: false,
+			boundaryLinks: false,
+			limitSelect: true,
+			pageSelect: true
+		  };
+		  
+		  $scope.query = {
+			order: 'name',
+			limit: 5,
+			page: 1
+		  };
+					
+			
         this.openFaqDialog = function(ev) {
            // console.log('open faq dialog ' + ev + $mdDialog);
             $mdDialog.show({
@@ -41,22 +59,37 @@ angular.module('demoApp')
           };
 
 
-           $scope.rowCollection = [
-       
-           { id: "1", Type: "Cat", Name: "Cat 1", Modified: '2016/03/01'},
-            { id: "2", Type: "Cat", Name: "Cat 2", Modified: '2016/01/01'}, 
-            { id: "3", Type: "Cat", Name: "Cat 3", Modified: '2016/01/02'},
-            { id: "4", Type: "FAQ", Name: "FAQ 1", Modified: '2016/01/01'},
-            { id: "5", Type: "FAQ", Name: "FAQ 2", Modified: '2016/03/01'},
-            { id: "6", Type: "FAQ", Name: "FAQ 3", Modified: '2016/01/01'},
-            { id: "7", Type: 'FAQ', Name: "FAQ 4", Modified: '2016/04/01'},
-            { id: "8", Type: 'FAQ', Name: "FAQ 5", Modified: '2016/04/01'},
-            { id: "9", Type: 'FAQ', Name: "FAQ 6", Modified: '2016/04/01'},
-            { id: "10", Type: 'FAQ', Name: "FAQ 7", Modified: '2016/04/01'},
-            { id: "11", Type: 'FAQ', Name: "FAQ 8", Modified: '2016/04/01'}
+           $scope.items = {
+                "count" : 11 ,
+				"data"  : [
+           { id: "1", type: "Cat",  name: "Cat 1", modified: '2016/03/01'},
+            { id: "2", type: "Cat", name: "Cat 2", modified: '2016/01/01'}, 
+            { id: "3", type: "Cat", name: "Cat 3", modified: '2016/01/02'},
+            { id: "4", type: "FAQ", name: "FAQ 1", modified: '2016/01/01'},
+            { id: "5", type: "FAQ", name: "FAQ 2", modified: '2016/03/01'},
+            { id: "6", type: "FAQ", name: "FAQ 3", modified: '2016/01/01'},
+            { id: "7", type: 'FAQ', name: "FAQ 4", modified: '2016/04/01'},
+            { id: "8", type: 'FAQ', name: "FAQ 5", modified: '2016/04/01'},
+            { id: "9", type: 'FAQ', name: "FAQ 6", modified: '2016/04/01'},
+            { id: "10", type: 'FAQ', name: "FAQ 7", modified: '2016/04/01'},
+            { id: "11", type: 'FAQ', name: "FAQ 8", modified: '2016/04/01'}
             
-          ];
+			]};
 
+		  
+		  
+		  $scope.logItem = function (item) {
+			console.log(item.name, 'was selected');
+		  };
+		  
+		  $scope.logOrder = function (order) {
+			console.log('order: ', order);
+		  };
+		  
+		  $scope.logPagination = function (page, limit) {
+			console.log('page: ', page);
+			console.log('limit: ', limit);
+		  }		  
             $scope.model = {
                         title: 'FAQ Editor'
                     };
@@ -69,29 +102,7 @@ angular.module('demoApp')
               $mdOpenMenu(ev);
             };
 
-            this.notificationsEnabled = true;
-            this.toggleNotifications = function() {
-              this.notificationsEnabled = !this.notificationsEnabled;
-            };
-
-             this.redial = function() {
-                  $mdDialog.show(
-                    $mdDialog.alert()
-                      .targetEvent(originatorEv)
-                      .clickOutsideToClose(true)
-                      .parent('body')
-                      .title('Suddenly, a redial')
-                      .textContent('You just called a friend; who told you the most amazing story. Have a cookie!')
-                      .ok('That was easy')
-                  );
-
-                  originatorEv = null;
-                };
-
-                this.checkVoicemail = function() {
-                  // This never happens.
-                };
-
+             
 
                 function DialogController($scope, $mdDialog) {
                     $scope.hide = function() {
