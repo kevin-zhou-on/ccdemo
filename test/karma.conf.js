@@ -34,6 +34,7 @@ module.exports = function(config) {
       'bower_components/angular-material/angular-material.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-material-sidenav/angular-material-sidenav.js',
+      'bower_components/svg-assets-cache.js/svg-assets-cache.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "../angular-material-sidenav.js",
