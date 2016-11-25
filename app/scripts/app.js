@@ -67,6 +67,14 @@ angular
                 controller: 'HomeCtrl'
             });
 
+
+            $stateProvider.state({
+                name: 'common.faq',
+                url: '/faq_main',
+                templateUrl: 'views/faq_main.html',
+                controller:  'FaqCtrl'
+            });
+
             $stateProvider.state({
                 name: 'common.toggle1',
                 url: '/toogle1',
@@ -110,12 +118,6 @@ angular
                 }
             });
 
-            $stateProvider.state({
-                name: 'common.link2',
-                url: '/link2',
-                templateUrl: 'views/default.html',
-                controller:  'FaqCtrl'
-            });
 
             $stateProvider.state({
                 name: 'common.link2.edit',
@@ -195,6 +197,13 @@ angular
                         type: 'link',
                         icon: 'fa fa-home'
                     }, 
+
+                    {
+                id: 'link_faq',
+                name: 'FAQ Editor',
+                state: 'common.faq',
+                type: 'link'
+            } ,
                 {
                 id: 'toogle_1',
                 name: 'Section Heading 1',
@@ -225,11 +234,6 @@ angular
                 state: 'common.link1',
                 type: 'link',
                 icon: 'fa fa-check'
-            }, {
-                id: 'link_faq',
-                name: 'FQA Editor',
-                state: 'common.link2',
-                type: 'link'
             }, {
                 id: 'link_3',
                 name: 'Link 3',

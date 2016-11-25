@@ -1,0 +1,15 @@
+<md-toolbar> <div class="md-toolbar-tools"> <md-button class="md-icon-button" aria-label="Menu Button" hide-gt-md ng-click="onClickMenu();"> <md-icon md-svg-icon="images/icons/menu.svg" aria-label="Menu Icon"> </md-icon> </md-button> <h2>Brand Name</h2> <span flex></span> </div> </md-toolbar> <div class="demo-md-panel-animation md-padding" ng-controller="FaqCtrl as ctrl"> <h2>FAQ Editor</h2> <md-content style="overflow: hidden"> <md-toolbar> <div class="md-toolbar-tools"> <md-button aria-label="Go Back"> Go Back </md-button> <md-button class="md-raised" aria-label="Learn More"> Add Category </md-button> <md-button class="md-raised" aria-label="Learn More"> Add FAQ </md-button> <div class="menu-demo-container" layout-align="center center" layout="column"> <md-menu> <md-button aria-label="Open phone interactions menu" class="" ng-click="ctrl.openMenu($mdOpenMenu, $event)"> <md-icon md-menu-origin="" md-svg-icon="call:dialpad"></md-icon> Edit </md-button> <md-menu-content> <md-menu-item> <md-button ng-click=""> <md-icon md-svg-icon="content-cut"></md-icon> Cut </md-button> </md-menu-item> <md-menu-item> <md-button disabled ng-click="ctrl.checkVoicemail()"> <md-icon md-svg-icon="content-copy"></md-icon> Copy </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item> <md-button ng-click="ctrl.toggleNotifications()"> <md-icon md-svg-icon="social:notifications-{{notificationsEnabled ? 'off' : 'on'}}"></md-icon> {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications </md-button> </md-menu-item> <md-menu-item class=""> <md-button ng-click=""> <md-icon md-svg-icon="content-paste"></md-icon> Paste </md-button> </md-menu-item> </md-menu-content> </md-menu> </div> <span flex></span> <!--
+			<ul class="nav navbar-nav">
+                            <li><button type="button" class="btn btn-warning navbar-btn" ><span class="glyphicon glyphicon-import"></span>Import</button></li>
+                            <li><button type="button" class="btn btn-warning navbar-btn" ><span class="glyphicon glyphicon-export"></span>Export</button></li>
+
+             </ul>
+			--> <!--
+			<md-button class="md-fab md-mini" aria-label="Favorite">
+			  <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+			</md-button>
+			--> </div> </md-toolbar> </md-content> <div layout="row"> <table st-table="rowCollection" class="table table-striped"> <thead> <tr> <td></td> <th>Type</th> <th>Name</th> <th>Date Modified</th> <th></th> </tr> </thead> <tbody> <tr ng-repeat="row in rowCollection"> <td><md-checkbox md-no-ink aria-label="select" ng-model="data.cb5" class="md-primary"> </md-checkbox> </td> <td><span class="glyphicon glyphicon-{{row.Type == 'Cat' ? 'folder-open' : 'file'}}" style="color:rgb(2,136,209)"></span></td> <td><a href="#">{{row.Name}}</a></td> <td>{{row.Modified}}</td> <td> <a href="" ng-click="ctrl.openFaqDialog($event)"> <span class="glyphicon glyphicon-edit"></span> Edit </a> <!--	
+                                 <md-button class="md-primary md-raised" ng-click="ctrl.openFaqDialog($event)">
+							      Custom Dialog
+							    </md-button>
+							    --> </td> </tr> </tbody> </table> </div> </div> 

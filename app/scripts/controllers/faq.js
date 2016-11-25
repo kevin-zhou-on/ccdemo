@@ -14,14 +14,45 @@ angular.module('demoApp')
         '$timeout',
         '$state',
         'ssSideNav',
-    
+        '$mdDialog',
         function (
             $scope,
             $timeout,
             $state,
             ssSideNav,
-            $mdOpenMenu) {
- 
+             $mdDialog
+            ) {
+
+        this.openFaqDialog = function(ev) {
+           // console.log('open faq dialog ' + ev + $mdDialog);
+            $mdDialog.show({
+              controller: DialogController,
+              templateUrl: 'views/faq_dialog.html',
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:true,
+              fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            })
+            .then(function(answer) {
+              $scope.status = 'You said the information was "' + answer + '".';
+            }, function() {
+              $scope.status = 'You cancelled the dialog.';
+            });
+          };
+
+
+           $scope.rowCollection = [
+       
+           { id: "1", Type: "Cat", Name: "Cat 1", Modified: '2016/03/01'},
+            { id: "2", Type: "Cat", Name: "Cat 2", Modified: '2016/01/01'}, 
+            { id: "3", Type: "Cat", Name: "Cat 3", Modified: '2016/01/02'},
+            { id: "4", Type: "FAQ", Name: "FAQ 1", Modified: '2016/01/01'},
+            { id: "5", Type: "FAQ", Name: "FAQ 2", Modified: '2016/03/01'},
+            { id: "6", Type: "FAQ", Name: "FAQ 3", Modified: '2016/01/01'},
+            { id: "7", Type: 'FAQ', Name: "FAQ 4", Modified: '2016/04/01'}
+            
+          ];
+
             $scope.model = {
                         title: 'FAQ Editor'
                     };
@@ -56,5 +87,20 @@ angular.module('demoApp')
                 this.checkVoicemail = function() {
                   // This never happens.
                 };
+
+
+                function DialogController($scope, $mdDialog) {
+                    $scope.hide = function() {
+                      $mdDialog.hide();
+                    };
+
+                    $scope.cancel = function() {
+                      $mdDialog.cancel();
+                    };
+
+                    $scope.answer = function(answer) {
+                      $mdDialog.hide(answer);
+                    };
+                  }            
 	   }
     ]);
