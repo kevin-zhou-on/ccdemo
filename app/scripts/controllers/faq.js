@@ -160,6 +160,11 @@ angular.module('demoApp')
              
 
                 function DialogController($scope, $mdDialog) {
+
+                  $scope.project = {
+                    description: 'Nuclear Missile Defense System',
+                    rate: 500
+                  };
                     $scope.hide = function() {
                       $mdDialog.hide();
                     };
