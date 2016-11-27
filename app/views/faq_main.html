@@ -10,7 +10,7 @@
             </md-icon>
         </md-button>
 
-        <h2>Brand Name</h2>
+        <h2>FAQ Editor</h2>
 
         <span flex></span>
     </div>
@@ -18,7 +18,7 @@
 
 
   <md-content flex style="border: 1px solid firebrick;" layout="column"  ng-controller="FaqCtrl as ctrl">
-   <h2>FAQ Editor</h2>
+   
    <md-content style="overflow: hidden;">
 
    	 <md-toolbar>
@@ -41,7 +41,7 @@
                Add FAQ
            </md-button>
 
-            <div class="menu-demo-container" layout-align="center center" layout="column">
+            <div class="menu-demo-container" flex layout-align="center center" layout="column">
 			<md-menu>
 			      <md-button aria-label="Open phone interactions menu" class="" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
 			        <md-icon md-menu-origin="" md-svg-icon="call:dialpad"></md-icon>   
@@ -84,7 +84,6 @@
 
              </div>
 
-			<span flex></span>
 
 		    <md-button class="md-raised md-warn" aria-label="Learn More"><md-icon  md-font-icon="fa fa-upload"></md-icon>
               Import
@@ -118,6 +117,9 @@
           </div>
         </md-toolbar>
         -->
+        <md-toolbar class="md-table-toolbar">
+            a > b > c 
+        </md-toolbar>
         <md-table-container>
           <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
             <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
@@ -141,10 +143,10 @@
             <tbody md-body>
               <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                 <td md-cell>
-                   <span  class="glyphicon glyphicon-{{row.type == 'Cat' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span>
+                   <span  class="glyphicon glyphicon-{{row.type == 'c' ? 'folder-open' : 'f'}}" style='color:rgb(2,136,209);'></span>
                 </td>
-                <td md-cell>{{row.name}}</td>
-                <td md-cell>{{row.modified}}</td>
+                <td md-cell><a href='' ng-click='ctrl.drilldown(row)'>{{row.name}}</a></td>
+                <td md-cell>{{row.updated}}</td>
 				<td md-cell>
 				    <a href="" ng-click="ctrl.openFaqDialog($event)">
                                     <span class="glyphicon glyphicon-edit"></span> Edit

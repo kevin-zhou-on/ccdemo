@@ -16,17 +16,30 @@ angular.module('demoApp')
         'ssSideNav',
         '$mdDialog',
 		'$mdEditDialog',
+    'CoreService',
         function (
-            $scope, $timeout, $state, ssSideNav, $mdDialog, $mdEditDialog
+            $scope, $timeout, $state, ssSideNav, $mdDialog, $mdEditDialog,CoreService
             ) {
 
-		 $scope.selected = [];
+     CoreService.callAPIGet('admin/faq/home',function(result){
+         $scope.breadcrumb = ['Root'];
+
+         $scope.items = {
+           "count" : result.data.length,
+           "data"  : result.data
+          }           ;
+
+          
+     });
+
+
+		  $scope.selected = [];
 		  $scope.limitOptions = [5, 10, 15];
 		  
 		  $scope.options = {
 			rowSelection: true,
 			multiSelect: true,
-			autoSelect: true,
+			autoSelect: false,
 			decapitate: false,
 			largeEditDialog: false,
 			boundaryLinks: false,
@@ -40,6 +53,19 @@ angular.module('demoApp')
 			page: 1
 		  };
 					
+
+        this.drilldown = function(node){
+             CoreService.callAPIGet('admin/faq/cat/' + node.id,function(result){
+             $scope.breadcrumb.push (node);
+
+              $scope.items = {
+                "count" : result.data.length,
+                "data"  : result.data
+                }           ;
+
+                
+          });
+        }
 			
         this.openFaqDialog = function(ev) {
            // console.log('open faq dialog ' + ev + $mdDialog);
@@ -59,7 +85,7 @@ angular.module('demoApp')
           };
 
 
-           $scope.items = {
+       /*    $scope.items = {
                 "count" : 11 ,
 				"data"  : [
            { id: "1", type: "Cat",  name: "Cat 1", modified: '2016/03/01'},
@@ -75,7 +101,7 @@ angular.module('demoApp')
             { id: "11", type: 'FAQ', name: "FAQ 8", modified: '2016/04/01'}
             
 			]};
-
+   */
 		  
 		  
 		  $scope.logItem = function (item) {
