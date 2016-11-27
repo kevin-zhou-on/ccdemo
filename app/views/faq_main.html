@@ -23,7 +23,7 @@
 
    	 <md-toolbar>
 		  <div class="md-toolbar-tools">
-			<md-button aria-label="Go Back">
+			<md-button aria-label="Go Back" ng-click="ctrl.goback()">
 			  Go Back
 			</md-button>
 			
@@ -118,7 +118,12 @@
         </md-toolbar>
         -->
         <md-toolbar class="md-table-toolbar">
-            a > b > c 
+                <ol class="breadcrumb">
+                                          <li ng-repeat="bc in breadcrumb">
+                                               <a ng-if="bc.id != null" href="" ng-click="ctrl.selectNode(true,bc)">{{bc.name}}</a>
+                                               <div ng-if="bc.id == null">{{bc.name}}</div>
+                                          </li>
+                </ol> 
         </md-toolbar>
         <md-table-container>
           <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
@@ -143,9 +148,11 @@
             <tbody md-body>
               <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                 <td md-cell>
-                   <span  class="glyphicon glyphicon-{{row.type == 'c' ? 'folder-open' : 'f'}}" style='color:rgb(2,136,209);'></span>
+                   <span  class="glyphicon glyphicon-{{row.type == 'c' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span>
                 </td>
-                <td md-cell><a href='' ng-click='ctrl.drilldown(row)'>{{row.name}}</a></td>
+                <td md-cell><a href='' class='cc-link' ng-if="row.type == 'c'" ng-click='ctrl.drilldown(row)'>{{row.name}}</a>
+                            <div ng-if="row.type =='f'">{{row.name}}</div>
+                </td>
                 <td md-cell>{{row.updated}}</td>
 				<td md-cell>
 				    <a href="" ng-click="ctrl.openFaqDialog($event)">

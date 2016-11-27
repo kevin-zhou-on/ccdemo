@@ -21,20 +21,10 @@ angular.module('demoApp')
             $scope, $timeout, $state, ssSideNav, $mdDialog, $mdEditDialog,CoreService
             ) {
 
-     CoreService.callAPIGet('admin/faq/home',function(result){
-         $scope.breadcrumb = ['Root'];
-
-         $scope.items = {
-           "count" : result.data.length,
-           "data"  : result.data
-          }           ;
-
-          
-     });
-
+    
 
 		  $scope.selected = [];
-		  $scope.limitOptions = [5, 10, 15];
+		  $scope.limitOptions = [25, 50, 100];
 		  
 		  $scope.options = {
 			rowSelection: true,
@@ -48,15 +38,47 @@ angular.module('demoApp')
 		  };
 		  
 		  $scope.query = {
-			order: 'name',
-			limit: 5,
+			order: 'type',
+			limit: 25,
 			page: 1
 		  };
 					
+       this.goFaqHome = function(){
+          CoreService.callAPIGet('admin/faq/home',function(result){
+                  $scope.breadcrumb = [{ 'name' : 'Root', 'id' : ''}];
 
-        this.drilldown = function(node){
+                  $scope.items = {
+                    "count" : result.data.length,
+                    "data"  : result.data
+                    }           ;
+
+                    
+              });
+       }
+
+      this.goFaqHome();
+
+
+       this.goback = function(){
+           if($scope.breadcrumb.length > 1){
+               $scope.breadcrumb.pop();
+               var last = $scope.breadcrumb[$scope.breadcrumb.length -1];
+               this.selectNode(true,last);
+           }
+       }
+
+       this.selectNode = function(isback, node){
+         if(node && node.id){
+             if(isback){
+                var last = $scope.breadcrumb[$scope.breadcrumb.length -1];
+                while(last.id != node.id){
+                    $scope.breadcrumb.pop();
+                    last = $scope.breadcrumb[$scope.breadcrumb.length -1];
+                }
+             }
+
              CoreService.callAPIGet('admin/faq/cat/' + node.id,function(result){
-             $scope.breadcrumb.push (node);
+             if(!isback) $scope.breadcrumb.push (node);
 
               $scope.items = {
                 "count" : result.data.length,
@@ -65,6 +87,13 @@ angular.module('demoApp')
 
                 
           });
+         }else{
+           this.goFaqHome();
+         }
+       }
+
+        this.drilldown = function(node){
+            this.selectNode(false,node);
         }
 			
         this.openFaqDialog = function(ev) {
