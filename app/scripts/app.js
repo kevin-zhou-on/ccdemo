@@ -85,9 +85,8 @@ function CoreService($rootScope, $http, $window) {
         $rootScope.apiCall.count = $rootScope.apiCall.count + 1;
         $rootScope.clearMessage();
         
-        var userToken = $rootScope.retrieveUserToken();
         var apiUrl = this.apiServerURL + ep_uri;
-        $rootScope.debuglog('CoreService.callAPIPost:' + apiUrl + ', token:'+userToken);
+        $rootScope.debuglog('CoreService.callAPIPost:' + apiUrl );
 
         var authConfig = {
             headers : {
@@ -393,7 +392,7 @@ app.config([
 app.run(function($rootScope, $http) {
 	//$rootScope._loginUrl = __env.userLoginUrl;
 	//$rootScope._logoutUrl = __env.userLogoutUrl;
-    $rootScope.apiServerUrl = 'http://localhost:8080/';
+    $rootScope.apiServerUrl = 'http://192.168.0.108:8080/';
 	$rootScope.enableDebugLog = true ; //__env.enableDebugLog;
 	//$rootScope.buildVersionNumber = __env.buildVersionNumber;
 

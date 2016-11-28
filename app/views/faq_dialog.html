@@ -1,5 +1,5 @@
-<md-dialog aria-label="Edit Category">
-  <form ng-cloak>
+<md-dialog aria-label="Edit Category" flex="80">
+  <form name="catForm" ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Edit Category</h2>
@@ -12,29 +12,44 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <h2>Using .md-dialog-content class that sets the padding as the spec</h2>
        
        <md-content layout-padding>
-    <form name="projectForm">
+    
 
       <md-input-container class="md-block">
-        <label>Description</label>
-        <input md-maxlength="30" required md-no-asterisk name="description" ng-model="project.description">
-        <div ng-messages="projectForm.description.$error">
+        <label>Category Name</label>
+        <input md-maxlength="128" required md-no-asterisk name="catName" ng-model="category.catName">
+        <div ng-messages="catForm.catName.$error">
           <div ng-message="required">This is required.</div>
-          <div ng-message="md-maxlength">The description must be less than 30 characters long.</div>
+          <div ng-message="md-maxlength">The description must be less than 128 characters long.</div>
         </div>
+
+      
       </md-input-container>
 
+     <md-input-container class="md-block">
+        <label>NLP Engine</label>
+         <md-select name="nlpengine" ng-model="category.nlpEngineId"  required>
+            <md-option><em>Choose...</em></md-option>
+            <md-option ng-repeat="nlpEngineOp in nlpengineDropdown" ng-value="nlpEngineOp.id">{{nlpEngineOp.name}}</md-option>
+          </md-select>
+      
+        <div ng-messages="catForm.nlpEngineId.$error" >
+           <div ng-message="required">This is required.</div>
+         </div>
+      </md-input-container>
+
+      
+  <!--
       <div layout="row">
         <md-input-container flex="50">
-          <label>Client Name</label>
-          <input required name="clientName" ng-model="project.clientName">
-          <div ng-messages="projectForm.clientName.$error">
+          <label>Category Key</label>
+          <input required name="name" ng-model="project.clientName">
+          <div ng-messages="catForm.clientName.$error">
             <div ng-message="required">This is required.</div>
           </div>
         </md-input-container>
-
+   
         <md-input-container flex="50">
           <label>Project Type</label>
           <md-select name="type" ng-model="project.type" required>
@@ -42,74 +57,55 @@
             <md-option value="web">Website</md-option>
           </md-select>
         </md-input-container>
+        
       </div>
+      -->
 
       <md-input-container class="md-block">
-        <label>Client Email</label>
-        <input required type="email" name="clientEmail" ng-model="project.clientEmail"
-               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+        <label>Catgory Key</label>
+        <input required   name="catKey" ng-model="category.catKey"/>
 
-        <div ng-messages="projectForm.clientEmail.$error" role="alert">
-          <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-            Your email must be between 10 and 100 characters long and look like an e-mail address.
-          </div>
+        <div ng-messages="catForm.catKey.$error" >
+          <div ng-message="required">This is required.</div>
+          <div ng-message="md-maxlength">The description must be less than 64 characters long.</div>
         </div>
       </md-input-container>
 
       <md-input-container class="md-block">
-        <label>Hourly Rate (USD)</label>
-        <input required type="number" step="any" name="rate" ng-model="project.rate" min="800"
-               max="4999" ng-pattern="/^1234$/" />
+        <label>Weight</label>
+        <input required type="number" step="any" name="weight" ng-model="category.weight" min="0"
+               max="100"  />
 
-        <div ng-messages="projectForm.rate.$error" multiple md-auto-hide="false">
-          <div ng-message="required">
-            You've got to charge something! You can't just <b>give away</b> a Missile Defense
-            System.
-          </div>
-
-          <div ng-message="min">
-            You should charge at least $800 an hour. This job is a big deal... if you mess up,
-            everyone dies!
-          </div>
-
-          <div ng-message="pattern">
-            You should charge exactly $1,234.
-          </div>
-
-          <div ng-message="max">
-            {{projectForm.rate.$viewValue | currency:"$":0}} an hour? That's a little ridiculous. I
-            doubt even Bill Clinton could afford that.
-          </div>
+        <div ng-messages="catForm.weight.$error" >
+           <div ng-message="required">This is required.</div>
         </div>
       </md-input-container>
-
+ <!--
       <div>
-        <md-button type="submit">Submit</md-button>
+        <md-button class="md-raised"  type="submit">Submit</md-button>
       </div>
-
+     
       <p style="font-size:.8em; width: 100%; text-align: center;">
         Make sure to include <a href="https://docs.angularjs.org/api/ngMessages" target="_blank">ngMessages</a> module when using ng-message markup.
       </p>
-    </form>
+      -->
+    
   </md-content>
 
 
 
       </div>
     </md-dialog-content>
-<!--
+ 
     <md-dialog-actions layout="row">
-      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
-        More on Wikipedia
+      
+      <md-button ng-click="submit(category)">
+         Submit
       </md-button>
-      <span flex></span>
-      <md-button ng-click="answer('not useful')">
-       Not Useful
-      </md-button>
-      <md-button ng-click="answer('useful')">
-        Useful
+      <md-button ng-click="cancel()">
+        Cancel
       </md-button>
     </md-dialog-actions>
-    -->
+    
   </form>
 </md-dialog>

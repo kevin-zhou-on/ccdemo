@@ -21,7 +21,7 @@ angular.module('demoApp')
             $scope, $timeout, $state, ssSideNav, $mdDialog, $mdEditDialog,CoreService
             ) {
 
-    
+      var that = this;
 
 		  $scope.selected = [];
 		  $scope.limitOptions = [25, 50, 100];
@@ -67,6 +67,11 @@ angular.module('demoApp')
            }
        }
 
+       this.refreshCurrentNode = function(){
+            var last = $scope.breadcrumb[$scope.breadcrumb.length -1];
+            this.selectNode(false,last);
+       }
+
        this.selectNode = function(isback, node){
          if(node && node.id){
              if(isback){
@@ -96,14 +101,16 @@ angular.module('demoApp')
             this.selectNode(false,node);
         }
 			
-        this.openFaqDialog = function(ev) {
+        this.openFaqDialogCat = function(ev,node) {
            // console.log('open faq dialog ' + ev + $mdDialog);
+             
             $mdDialog.show({
-              controller: DialogController,
+              controller: DialogControllerCat,
               templateUrl: 'views/faq_dialog.html',
               parent: angular.element(document.body),
               targetEvent: ev,
               clickOutsideToClose:true,
+              locals : {selectedNode : node},
               fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
             })
             .then(function(answer) {
@@ -113,25 +120,7 @@ angular.module('demoApp')
             });
           };
 
-
-       /*    $scope.items = {
-                "count" : 11 ,
-				"data"  : [
-           { id: "1", type: "Cat",  name: "Cat 1", modified: '2016/03/01'},
-            { id: "2", type: "Cat", name: "Cat 2", modified: '2016/01/01'}, 
-            { id: "3", type: "Cat", name: "Cat 3", modified: '2016/01/02'},
-            { id: "4", type: "FAQ", name: "FAQ 1", modified: '2016/01/01'},
-            { id: "5", type: "FAQ", name: "FAQ 2", modified: '2016/03/01'},
-            { id: "6", type: "FAQ", name: "FAQ 3", modified: '2016/01/01'},
-            { id: "7", type: 'FAQ', name: "FAQ 4", modified: '2016/04/01'},
-            { id: "8", type: 'FAQ', name: "FAQ 5", modified: '2016/04/01'},
-            { id: "9", type: 'FAQ', name: "FAQ 6", modified: '2016/04/01'},
-            { id: "10", type: 'FAQ', name: "FAQ 7", modified: '2016/04/01'},
-            { id: "11", type: 'FAQ', name: "FAQ 8", modified: '2016/04/01'}
-            
-			]};
-   */
-		  
+  
 		  
 		  $scope.logItem = function (item) {
 			console.log(item.name, 'was selected');
@@ -159,12 +148,18 @@ angular.module('demoApp')
 
              
 
-                function DialogController($scope, $mdDialog) {
+       function DialogControllerCat($scope, $mdDialog, selectedNode) {
+              CoreService.callAPIGet('common/dropdown/nlpengine',function(result){
+                    $scope.nlpengineDropdown = result.data ;
+               });
+                            
+               CoreService.callAPIGet('admin/faq/edit/cat/' + selectedNode.id ,function(result){
+                    $scope.category = result.data ;
+               });
 
-                  $scope.project = {
-                    description: 'Nuclear Missile Defense System',
-                    rate: 500
-                  };
+
+               //$scope.category = selectedNode; 
+                    
                     $scope.hide = function() {
                       $mdDialog.hide();
                     };
@@ -173,8 +168,24 @@ angular.module('demoApp')
                       $mdDialog.cancel();
                     };
 
-                    $scope.answer = function(answer) {
-                      $mdDialog.hide(answer);
+                    $scope.submit = function(category) {
+                       console && console.log(category);
+                        CoreService.callAPIPost('admin/faq/save/cat',
+                          category,
+                          function(result){
+                             if(result.status == 'SUCCESS'){
+                                 $mdDialog.hide();
+                                 that.refreshCurrentNode();
+                             }else{
+                                 alert('error occurred.');
+                             }
+                          } 
+
+                         
+                         );
+
+
+                        
                     };
                   }            
 	   }
