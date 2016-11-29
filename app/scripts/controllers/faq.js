@@ -22,6 +22,7 @@ angular.module('demoApp')
             ) {
 
       var that = this;
+ 
 
 		  $scope.selected = [];
 		  $scope.limitOptions = [25, 50, 100];
@@ -101,23 +102,42 @@ angular.module('demoApp')
             this.selectNode(false,node);
         }
 			
-        this.openFaqDialogCat = function(ev,node) {
+        this.openFaqDialog = function(ev,node) {
            // console.log('open faq dialog ' + ev + $mdDialog);
-             
-            $mdDialog.show({
-              controller: DialogControllerCat,
-              templateUrl: 'views/faq_dialog.html',
-              parent: angular.element(document.body),
-              targetEvent: ev,
-              clickOutsideToClose:true,
-              locals : {selectedNode : node},
-              fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            })
-            .then(function(answer) {
-              $scope.status = 'You said the information was "' + answer + '".';
-            }, function() {
-              $scope.status = 'You cancelled the dialog.';
-            });
+            if(node.type == 'c'){
+                $mdDialog.show({
+                  controller: DialogControllerCat,
+                  templateUrl: 'views/cat_dialog.html',
+                  parent: angular.element(document.body),
+                  targetEvent: ev,
+                  clickOutsideToClose:true,
+                  locals : {selectedNode : node},
+                  fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                  $scope.status = 'You said the information was "' + answer + '".';
+                }, function() {
+                  $scope.status = 'You cancelled the dialog.';
+                });
+
+            }else if(node.type == 'f'){
+                 $mdDialog.show({
+                    controller: DialogControllerFaq,
+                    templateUrl: 'views/faq_dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose:true,
+                    locals : {selectedNode : node},
+                    fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+                  })
+                  .then(function(answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                  }, function() {
+                    $scope.status = 'You cancelled the dialog.';
+                  });
+
+            }
+
           };
 
   
@@ -134,7 +154,8 @@ angular.module('demoApp')
 			console.log('page: ', page);
 			console.log('limit: ', limit);
 		  }		  
-            $scope.model = {
+        
+      $scope.model = {
                         title: 'FAQ Editor'
                     };
                 
@@ -147,6 +168,43 @@ angular.module('demoApp')
             };
 
              
+      function DialogControllerFaq($scope, $mdDialog, selectedNode) {
+                            
+               CoreService.callAPIGet('admin/faq/edit/msg/' + selectedNode.id ,function(result){
+                    $scope.faq = result.data ;
+               });
+
+
+               //$scope.category = selectedNode; 
+                    
+                    $scope.hide = function() {
+                      $mdDialog.hide();
+                    };
+
+                    $scope.cancel = function() {
+                      $mdDialog.cancel();
+                    };
+
+                    $scope.submit = function(category) {
+                       console && console.log(category);
+                        CoreService.callAPIPost('admin/faq/save/msg',
+                          category,
+                          function(result){
+                             if(result.status == 'SUCCESS'){
+                                 $mdDialog.hide();
+                                 that.refreshCurrentNode();
+                             }else{
+                                 alert('error occurred.');
+                             }
+                          } 
+
+                         
+                         );
+
+
+                        
+                    };
+                  }      ;      
 
        function DialogControllerCat($scope, $mdDialog, selectedNode) {
               CoreService.callAPIGet('common/dropdown/nlpengine',function(result){

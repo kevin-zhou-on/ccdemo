@@ -333,7 +333,7 @@ app.config([
                 name: 'FAQ Editor',
                 state: 'common.faq',
                 type: 'link'
-            } ,
+            } /*,
                 {
                 id: 'toogle_1',
                 name: 'Section Heading 1',
@@ -383,7 +383,7 @@ app.config([
                         state: 'common.toggle2.item1'
                     }]
                 }]
-            }]);
+            }*/]);
         }
     ]);
 

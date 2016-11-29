@@ -1,0 +1,111 @@
+<md-dialog aria-label="Edit Category" flex="80">
+  <form name="catForm" ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Edit Category</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+       
+       <md-content layout-padding>
+    
+
+      <md-input-container class="md-block">
+        <label>Category Name</label>
+        <input md-maxlength="128" required md-no-asterisk name="catName" ng-model="category.catName">
+        <div ng-messages="catForm.catName.$error">
+          <div ng-message="required">This is required.</div>
+          <div ng-message="md-maxlength">The description must be less than 128 characters long.</div>
+        </div>
+
+      
+      </md-input-container>
+
+     <md-input-container class="md-block">
+        <label>NLP Engine</label>
+         <md-select name="nlpengine" ng-model="category.nlpEngineId"  required>
+            <md-option><em>Choose...</em></md-option>
+            <md-option ng-repeat="nlpEngineOp in nlpengineDropdown" ng-value="nlpEngineOp.id">{{nlpEngineOp.name}}</md-option>
+          </md-select>
+      
+        <div ng-messages="catForm.nlpEngineId.$error" >
+           <div ng-message="required">This is required.</div>
+         </div>
+      </md-input-container>
+
+      
+  <!--
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>Category Key</label>
+          <input required name="name" ng-model="project.clientName">
+          <div ng-messages="catForm.clientName.$error">
+            <div ng-message="required">This is required.</div>
+          </div>
+        </md-input-container>
+   
+        <md-input-container flex="50">
+          <label>Project Type</label>
+          <md-select name="type" ng-model="project.type" required>
+            <md-option value="app">Application</md-option>
+            <md-option value="web">Website</md-option>
+          </md-select>
+        </md-input-container>
+        
+      </div>
+      -->
+
+      <md-input-container class="md-block">
+        <label>Catgory Key</label>
+        <input required   name="catKey" ng-model="category.catKey"/>
+
+        <div ng-messages="catForm.catKey.$error" >
+          <div ng-message="required">This is required.</div>
+          <div ng-message="md-maxlength">The description must be less than 64 characters long.</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container class="md-block">
+        <label>Weight</label>
+        <input required type="number" step="any" name="weight" ng-model="category.weight" min="0"
+               max="100"  />
+
+        <div ng-messages="catForm.weight.$error" >
+           <div ng-message="required">This is required.</div>
+        </div>
+      </md-input-container>
+ <!--
+      <div>
+        <md-button class="md-raised"  type="submit">Submit</md-button>
+      </div>
+     
+      <p style="font-size:.8em; width: 100%; text-align: center;">
+        Make sure to include <a href="https://docs.angularjs.org/api/ngMessages" target="_blank">ngMessages</a> module when using ng-message markup.
+      </p>
+      -->
+    
+  </md-content>
+
+
+
+      </div>
+    </md-dialog-content>
+ 
+    <md-dialog-actions layout="row">
+      
+      <md-button ng-click="submit(category)">
+         Submit
+      </md-button>
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+    
+  </form>
+</md-dialog>

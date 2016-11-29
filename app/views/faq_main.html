@@ -20,6 +20,7 @@
   <md-content flex style="border: 1px solid firebrick;" layout="column"  ng-controller="FaqCtrl as ctrl">
    
    <md-content style="overflow: hidden;">
+  
 
    	 <md-toolbar>
 		  <div class="md-toolbar-tools">
@@ -120,8 +121,8 @@
         <md-toolbar class="md-table-toolbar">
                 <ol class="breadcrumb">
                                           <li ng-repeat="bc in breadcrumb">
-                                               <a ng-if="bc.id != null" href="" ng-click="ctrl.selectNode(true,bc)">{{bc.name}}</a>
-                                               <div ng-if="bc.id == null">{{bc.name}}</div>
+                                               <a ng-if="bc.id != null" class='md-body-1' href="" ng-click="ctrl.selectNode(true,bc)">{{bc.name}}</a>
+                                               <div class='md-body-1'   ng-if="bc.id == null">{{bc.name}}</div>
                                           </li>
                 </ol> 
         </md-toolbar>
@@ -132,44 +133,30 @@
                 <th md-column md-order-by="type"><span>Type</span></th>
                 <th md-column md-order-by="name"><span>Name</span></th>
                 <th md-column md-date md-order-by="updated" md-desc><span>Date Modified</span></th>
-				<!--
-                <th md-column md-numeric md-order-by="carbs.value"><span>Carbs (g)</span></th>
-                <th md-column md-numeric md-order-by="protein.value"><span>Protein (g)</span></th>
-                <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium (mg)</span></th>
-                <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium (%)</span></th>
-                <th md-column md-numeric md-order-by="iron.value" hide-gt-xs show-gt-lg><span>Iron (%)</span></th>
-                <th md-column md-order-by="comment">
-                  <md-icon>comments</md-icon>
-                  <span>Comments</span>
-                </th>
-				-->
+				
               </tr>
             </thead>
             <tbody md-body>
-              <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+              <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                 <td md-cell>
+                 <!-- <md-icon
+                md-svg-icon="images/icons/ic_insert_drive_file.svg"
+                aria-label="Menu Icon">
                    <span  class="glyphicon glyphicon-{{row.type == 'c' ? 'folder-open' : 'file'}}" style='color:rgb(2,136,209);'></span>
+                   -->
+                   <i ng-if="row.type == 'f'" class="material-icons"  style='color:rgb(2,136,209);'>insert_drive_file</i>
+                   <i ng-if="row.type == 'c'" class="material-icons"  style='color:rgb(2,136,209);'>folder_open</i>
                 </td>
                 <td md-cell><a href='' class='cc-link' ng-if="row.type == 'c'" ng-click='ctrl.drilldown(row)'>{{row.name}}</a>
-                            <div ng-if="row.type =='f'">{{row.name}}</div>
+                            <div ng-if="row.type =='f'">{{row.name}}</div> 
                 </td>
                 <td md-cell>{{row.updated}}</td>
-				<td md-cell>
-				    <a href="" ng-click="ctrl.openFaqDialogCat($event, row)">
-                                    <span class="glyphicon glyphicon-edit"></span> Edit
-                     </a>
-				</td>
-				<!--
-                <td md-cell>{{dessert.fat.value | number: 2}}</td>
-                <td md-cell>{{dessert.carbs.value}}</td>
-                <td md-cell>{{dessert.protein.value | number: 2}}</td>
-                <td md-cell hide-gt-xs show-gt-md>{{dessert.sodium.value}}</td>
-                <td md-cell hide-gt-xs show-gt-lg>{{dessert.calcium.value}}%</td>
-                <td md-cell hide-gt-xs show-gt-lg>{{dessert.iron.value}}%</td>
-                <td md-cell ng-click="editComment($event, dessert)" ng-class="{'md-placeholder': !dessert.comment}">
-                  {{dessert.comment || 'Add a comment'}}
+                <td md-cell>
+                    <a href="" ng-click="ctrl.openFaqDialog($event, row)">
+                                            <span class="glyphicon glyphicon-edit"></span> Edit
+                            </a>
                 </td>
-				-->
+                
               </tr>
             </tbody>
           </table>
