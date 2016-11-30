@@ -17,87 +17,9 @@
 </md-toolbar>
 
 
-  <md-content flex style="border: 1px solid firebrick;" layout="column"  ng-controller="FaqCtrl as ctrl">
-   
-   <md-content style="overflow: hidden;">
-  
+  <md-content flex   layout="column"  ng-controller="FaqCtrl as ctrl">
 
-   	 <md-toolbar>
-		  <div class="md-toolbar-tools">
-			<md-button aria-label="Go Back" ng-click="ctrl.goback()">
-			  Go Back
-			</md-button>
-			
-			<md-button hide-gt-sm> 
-			   <md-icon md-font-set="md" ng-style="{  'font-size':  '24px' }">create_new_folder</md-icon>
-			</md-button>
-		    <md-button class="md-raised" hide-sm aria-label="Add Category">
-               Add Category
-           </md-button>
-
-		    <md-button hide-gt-sm> 
-			   <md-icon md-font-set="md" ng-style="{  'font-size':  '24px' }">add_circle_outline</md-icon>
-			</md-button>
-		    <md-button class="md-raised" hide-sm aria-label="Add Category">
-               Add FAQ
-           </md-button>
-
-            <div class="menu-demo-container" flex layout-align="center center" layout="column">
-			<md-menu>
-			      <md-button aria-label="Open phone interactions menu" class="" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
-			        <md-icon md-menu-origin="" md-svg-icon="call:dialpad"></md-icon>   
-			        Edit 
-			      </md-button>
-			      <md-menu-content >
-			        <md-menu-item>
-			          <md-button ng-click="">
-			            <md-icon  md-font-icon="fa fa-cut"></md-icon>
-			            Cut
-			          </md-button>
-			        </md-menu-item>   
-			        <md-menu-item>
-			          <md-button disabled="" ng-click="ctrl.checkVoicemail()">
-			            <md-icon  md-font-icon="fa fa-copy"></md-icon>
-			            Copy
-			          </md-button>
-			        </md-menu-item>
-
-					 <md-menu-item class="">
-					                <md-button disabled="disabled" ng-click="">
-
-			                        <md-icon  md-font-icon="fa fa-paste"></md-icon>
-					                  Paste
-					                  
-					                </md-button>
-					              </md-menu-item>			        
-
-
-			        <md-menu-divider></md-menu-divider>
-			        <md-menu-item>
-			          <md-button ng-click="ctrl.toggleNotifications()">
-			            <md-icon  md-font-icon="fa fa-remove"></md-icon>
-			              Remove
-			          </md-button>
-			        </md-menu-item>  
-
-			      </md-menu-content>
-			    </md-menu>
-
-             </div>
-
-
-		    <md-button class="md-raised md-warn" aria-label="Learn More"><md-icon  md-font-icon="fa fa-upload"></md-icon>
-              Import
-           </md-button>
-
-		    <md-button class="md-raised md-warn" aria-label="Learn More"><md-icon  md-font-icon="fa fa-download"></md-icon>
-              Export
-           </md-button>
-
-		
-		  </div>
-		</md-toolbar>
- </md-content>
+ 
  
  
       <md-card>
@@ -117,15 +39,148 @@
             <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
           </div>
         </md-toolbar>
-        -->
-        <md-toolbar class="md-table-toolbar">
-                <ol class="breadcrumb">
+      
+ 
+  -->
+        <md-toolbar hide-gt-xs>
+
+  
+<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+         <md-button class="md-fab md-mini md-primary" ng-click="ctrl.goback()" aria-label="go back">
+           <md-icon  md-font-icon="fa fa-level-up"></md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-primary" aria-label="cut">
+           <md-icon md-font-set="md" class="md-fab" ng-style="{  'font-size':  '24px' }">create_new_folder</md-icon>
+        </md-button>
+     
+        <md-button class="md-fab md-mini md-primary" aria-label="cut">
+           <md-icon  md-font-icon="fa fa-plus-square"></md-icon>
+        </md-button>
+
+
+        <md-button class="md-fab md-mini md-primary" ng-disabled="true" aria-label="cut">
+           <md-icon  md-font-icon="fa fa-copy"></md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-primary" aria-label="cut">
+           <md-icon  md-font-icon="fa fa-cut"></md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+           <md-icon  md-font-icon="fa fa-paste"></md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+           <md-icon  md-font-icon="fa fa-remove"></md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+           <md-icon  md-font-icon="fa fa-upload"></md-icon>
+        </md-button>
+       
+        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+           <md-icon  md-font-icon="fa fa-download"></md-icon>
+        </md-button>
+       
+        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+           <md-icon  md-font-icon="fa fa-search"></md-icon>
+        </md-button>
+       
+    </section>
+   
+        </md-toolbar>
+        <md-toolbar hide-xs>
+
+           <section layout="row"   layout-align="center center" style="max-height:80px">
+            <md-button aria-label="Go Back" ng-click="ctrl.goback()">
+              Go Back
+            </md-button>
+            
+ 
+              <md-button class="md-raised"   aria-label="Add Category">
+                    Add Category
+                </md-button>
+ <!--  
+              <md-button hide-gt-sm> 
+              <md-icon md-font-set="md" ng-style="{  'font-size':  '24px' }">add_circle_outline</md-icon>
+            </md-button>
+            -->
+              <md-button class="md-raised" aria-label="Add Category">
+                    Add FAQ
+                </md-button>
+ 
+             <div class="menu-demo-container" flex layout-align="center center" layout="column">
+            <md-menu>
+                  <md-button aria-label="Open phone interactions menu" class="" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+                    <md-icon md-menu-origin="" md-svg-icon="call:dialpad"></md-icon>   
+                    Edit 
+                  </md-button>
+                  <md-menu-content >
+                    <md-menu-item>
+                      <md-button ng-click="">
+                        <md-icon  md-font-icon="fa fa-cut"></md-icon>
+                        Cut
+                      </md-button>
+                    </md-menu-item>   
+                    <md-menu-item>
+                      <md-button disabled="" ng-click="ctrl.checkVoicemail()">
+                        <md-icon  md-font-icon="fa fa-copy"></md-icon>
+                        Copy
+                      </md-button>
+                    </md-menu-item>
+
+                <md-menu-item class="">
+                                <md-button disabled="disabled" ng-click="">
+
+                                    <md-icon  md-font-icon="fa fa-paste"></md-icon>
+                                  Paste
+                                  
+                                </md-button>
+                              </md-menu-item>			        
+
+
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.toggleNotifications()">
+                        <md-icon  md-font-icon="fa fa-remove"></md-icon>
+                          Remove
+                      </md-button>
+                    </md-menu-item>  
+
+                  </md-menu-content>
+                </md-menu>
+
+                  </div>
+
+               <md-button class="md-raised md-small md-warn" aria-label="Import"><md-icon  md-font-icon="fa fa-search"></md-icon>
+                    Search
+                </md-button>
+
+              <md-button class="md-raised md-small md-warn" aria-label="Import"><md-icon  md-font-icon="fa fa-upload"></md-icon>
+                    Import
+                </md-button>
+
+              <md-button class="md-raised md-small md-warn" aria-label="Export"><md-icon  md-font-icon="fa fa-download"></md-icon>
+                    Export
+                </md-button>
+
+          
+           </section>
+
+          </md-toolbar>
+
+        <md-content flex layout-padding>
+       
+
+                 <ol class="breadcrumb">
                                           <li ng-repeat="bc in breadcrumb">
                                                <a ng-if="bc.id != null" class='md-body-1' href="" ng-click="ctrl.selectNode(true,bc)">{{bc.name}}</a>
                                                <div class='md-body-1'   ng-if="bc.id == null">{{bc.name}}</div>
                                           </li>
                 </ol> 
-        </md-toolbar>
+         
+        
         <md-table-container>
           <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
             <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
@@ -163,6 +218,8 @@
         </md-table-container>
 
         <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{items.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+
+        </md-content>
       </md-card>
  
   </md-content>
