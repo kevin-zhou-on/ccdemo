@@ -23,26 +23,30 @@
  
  
       <md-card>
-        <!--
-        <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-            <span>Nutrition</span>
+       
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="!ctrl.searchMode">
+          
+          <div layout="row" layout-align="center start" class="md-toolbar-tools">
+            
+            <md-input-container  md-no-float style="min-width:80%" >
+              <md-icon>search</md-icon>
+              <input placeholder="search" ng-model="searchtext">
+              <md-icon  md-font-icon="fa fa-send"></md-icon>
+            </md-input-container>
+            
             <div flex></div>
-            <md-button class="md-icon-button" ng-click="loadStuff()">
-              <md-icon>refresh</md-icon>
+            <md-button class="md-icon-button" ng-click="ctrl.searchMode = false">
+              <md-icon>close</md-icon>
             </md-button>
           </div>
+           
         </md-toolbar>
          
-        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-          </div>
-        </md-toolbar>
+        
       
  
-  -->
-        <md-toolbar hide-gt-xs>
+  
+        <md-toolbar hide-gt-xs ng-hide="ctrl.searchMode">
 
   
 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
@@ -83,14 +87,14 @@
            <md-icon  md-font-icon="fa fa-download"></md-icon>
         </md-button>
        
-        <md-button class="md-fab md-mini md-primary" aria-label="Paste">
+        <md-button class="md-fab md-mini md-primary" ng-click="ctrl.searchMode = true" aria-label="Paste">
            <md-icon  md-font-icon="fa fa-search"></md-icon>
         </md-button>
        
     </section>
    
         </md-toolbar>
-        <md-toolbar hide-xs>
+        <md-toolbar hide-xs  ng-hide="ctrl.searchMode">
 
            <section layout="row"   layout-align="center center" style="max-height:80px">
             <md-button aria-label="Go Back" ng-click="ctrl.goback()">
@@ -101,11 +105,7 @@
               <md-button class="md-raised"   aria-label="Add Category">
                     Add Category
                 </md-button>
- <!--  
-              <md-button hide-gt-sm> 
-              <md-icon md-font-set="md" ng-style="{  'font-size':  '24px' }">add_circle_outline</md-icon>
-            </md-button>
-            -->
+
               <md-button class="md-raised" aria-label="Add Category">
                     Add FAQ
                 </md-button>
@@ -153,7 +153,7 @@
 
                   </div>
 
-               <md-button class="md-raised md-small md-warn" aria-label="Import"><md-icon  md-font-icon="fa fa-search"></md-icon>
+               <md-button class="md-raised md-small md-warn" ng-click="ctrl.searchMode = true" aria-label="Search"><md-icon  md-font-icon="fa fa-search"></md-icon>
                     Search
                 </md-button>
 

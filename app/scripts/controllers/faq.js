@@ -43,6 +43,9 @@ angular.module('demoApp')
 			limit: 25,
 			page: 1
 		  };
+
+      this.searchMode = false;
+      this.searchtext = '';
 					
        this.goFaqHome = function(){
           CoreService.callAPIGet('admin/faq/home',function(result){
