@@ -1,5 +1,5 @@
 <md-dialog aria-label="Edit FAQ"  flex-xs="90" flex-gt-xs="60" >
-  <form>
+  <form name="faqDialogCtrl.faqForm">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Edit FAQ</h2>
@@ -17,7 +17,7 @@
                               <label>FAQ Key</label>
                               <input required   name="faqKey" ng-model="faq.faqKey"/>
 
-                              <div ng-messages="faqForm.faqKey.$error" >
+                              <div ng-messages="faqDialogCtrl.faqForm.faqKey.$error" >
                                 <div ng-message="required">This is required.</div>
                                 <div ng-message="md-maxlength">The description must be less than 64 characters long.</div>
                               </div>
@@ -27,8 +27,8 @@
 
                             <md-input-container class="md-block">
                               <label>Question</label>
-                              <textarea rows="2" md-maxlength="128" required md-no-asterisk name="faqName" ng-model="faq.faqName"></textarea>
-                              <div ng-messages="faqForm.faqName.$error">
+                              <textarea required rows="2" md-maxlength="128" required md-no-asterisk name="faqName" ng-model="faq.faqName"></textarea>
+                              <div ng-messages="faqDialogCtrl.faqForm.faqName.$error">
                                 <div ng-message="required">This is required.</div>
                                 <div ng-message="md-maxlength">The description must be less than 128 characters long.</div>
                               </div>
@@ -40,13 +40,16 @@
           </md-content>
         </md-tab>
         <md-tab label="Answer">
-          <md-content class="md-padding">
-             <form class="form-horizontal">
+          <md-content class="md-padding " >
+               
 
-                <div class="form-group">
-                  <label class="control-label col-sm-2" for="email">Operator (op):</label>
-                  <div class="col-sm-10">
-                    <select id="jsonOp" class="form-control"   onchange="opOnChange()">
+             
+               <div layout="column" class="">
+                  <div layout="row">{{jsonResult()}}</div>
+                  <div layout="row">
+                    <label flex="20">Operator (op):</label>
+                   
+                    <select  flex  ng-model="nlpResponse.op">
                               <option value="">-- Select an Op --</option>
                               <option value="goto">Goto</option>
                               <option value="gosub">Gosub</option>
@@ -54,30 +57,34 @@
                               <option value="disp">Dispatch</option>
                               <option value="end">End</option>
                     </select>
-                  </div>
+                  
+                </div>
+                
+                <div  layout="row" >
+                  <label flex="20"  >Operand (opd):</label>
+                  <div flex ng-if="nlpResponse.operator != 'goto' && nlpResponse.operator!='gosub'">N/A</div>
+                  <textarea ng-if="nlpResponse.operator == 'goto' || nlpResponse.operator=='gosub'" flex name="" rows="5" ng-model="nlpResponse.opd" ></textarea>
+                   
                 </div>
 
+                <div   layout="row">
+                  <label flex="20" >Answer:</label>
+                   
+                  <textarea flex rows="5" ng-model="nlpResponse.answer"></textarea> 
+                  
+                </div>           
 
-                <div class="form-group">
-                  <label class="control-label col-sm-2" for="pwd">Operand (opd):</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" id="comment"></textarea>
-                  </div>
+                <div   layout="row">
+                  <label flex="20">Javascript Function (fn):</label>
+                   
+                    <textarea flex rows="5" ng-model="nlpResponse.fn"></textarea> 
+                 
                 </div>
-
-                <div class="form-group">
-                  <label class="control-label col-sm-2" for="pwd">Answer:</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" id="comment"></textarea> 
-                  </div>
-                </div>                
-                <div class="form-group">
-                  <label class="control-label col-sm-2" for="pwd">Javascript Function (fn):</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" id="comment"></textarea> 
-                  </div>
-                </div>       
-              </form>
+  
+               </div>
+              
+                  
+             
           </md-content>
         </md-tab>
         
@@ -86,7 +93,7 @@
 
     <md-dialog-actions layout="row">
        
-      <md-button ng-click="submit(faq)">
+      <md-button ng-disabled="!faqDialogCtrl.faqForm.$valid" ng-click="submit(faq,nlpResponse)">
          Submit
       </md-button>
       <md-button ng-click="cancel()">

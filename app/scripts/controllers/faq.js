@@ -126,6 +126,7 @@ angular.module('demoApp')
             }else if(node.type == 'f'){
                  $mdDialog.show({
                     controller: DialogControllerFaq,
+                    controllerAs : 'faqDialogCtrl',
                     templateUrl: 'views/faq_dialog.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
@@ -172,14 +173,26 @@ angular.module('demoApp')
 
              
       function DialogControllerFaq($scope, $mdDialog, selectedNode) {
-                            
+               var self = this;
+
                CoreService.callAPIGet('admin/faq/edit/msg/' + selectedNode.id ,function(result){
                     $scope.faq = result.data ;
+
+                    $scope.nlpResponse = angular.fromJson($scope.faq.metaMsg);
+
+                   /* $scope.nlpResponse = {
+                        "op" : "",
+                        "opd"  : "",
+                        "answer"   : "",
+                        "fn"       : ""
+                    };*/
                });
 
 
                //$scope.category = selectedNode; 
-                    
+                    $scope.jsonResult = function(){
+                        return JSON.stringify($scope.nlpResponse);
+                    }
                     $scope.hide = function() {
                       $mdDialog.hide();
                     };
@@ -188,10 +201,17 @@ angular.module('demoApp')
                       $mdDialog.cancel();
                     };
 
-                    $scope.submit = function(category) {
-                       console && console.log(category);
+                    $scope.submit = function(faq,nlpResponse) {
+                       if (!self.faqForm.$valid) {
+                         //alert('please fix the input error');
+                         //self.faqForm.$setDirty();
+                         return;
+                       }
+
+                       faq.metaMsg = JSON.stringify(nlpResponse);
+                        console && console.log(faq);
                         CoreService.callAPIPost('admin/faq/save/msg',
-                          category,
+                          faq,
                           function(result){
                              if(result.status == 'SUCCESS'){
                                  $mdDialog.hide();
