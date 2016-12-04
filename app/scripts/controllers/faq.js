@@ -46,6 +46,7 @@ angular.module('demoApp')
 
       this.searchMode = false;
       this.searchtext = '';
+      this.searching  = false;
 					
        this.goFaqHome = function(){
           CoreService.callAPIGet('admin/faq/home',function(result){
@@ -58,10 +59,21 @@ angular.module('demoApp')
 
                     
               });
-       }
+       };
 
       this.goFaqHome();
 
+      this.search = function(){
+         if(!that.searchtext) return;
+         that.searching  = true;
+         CoreService.callAPIGet('admin/faq/search/' + that.searchtext ,function(result){
+                  $scope.items = {
+                    "count" : result.data.length,
+                    "data"  : result.data
+                    }           ;
+                    that.searching  = false;
+          });
+      }
 
        this.goback = function(){
            if($scope.breadcrumb.length > 1){
