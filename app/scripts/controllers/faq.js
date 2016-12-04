@@ -104,6 +104,16 @@ angular.module('demoApp')
         this.drilldown = function(node){
             this.selectNode(false,node);
         }
+		
+		this.addCatDialog = function(ev){
+			var node = {id: null , type: 'c' , name: "" , parentMetaMsgCatId : $scope.breadcrumb[$scope.breadcrumb.length -1].id };
+			this.openFaqDialog(ev, node);
+		}
+		
+		this.addFaqDialog = function(ev){
+			var node = {id: null , type: 'f' , name: "" , metaMsgCatId : $scope.breadcrumb[$scope.breadcrumb.length -1].id };
+			this.openFaqDialog(ev, node);
+		}
 			
         this.openFaqDialog = function(ev,node) {
            // console.log('open faq dialog ' + ev + $mdDialog);
@@ -175,18 +185,34 @@ angular.module('demoApp')
       function DialogControllerFaq($scope, $mdDialog, selectedNode) {
                var self = this;
 
-               CoreService.callAPIGet('admin/faq/edit/msg/' + selectedNode.id ,function(result){
-                    $scope.faq = result.data ;
+			   if(selectedNode.id){
+				   CoreService.callAPIGet('admin/faq/edit/msg/' + selectedNode.id ,function(result){
+						$scope.faq = result.data ;
 
-                    $scope.nlpResponse = angular.fromJson($scope.faq.metaMsg);
+						$scope.nlpResponse = angular.fromJson($scope.faq.metaMsg);
 
-                   /* $scope.nlpResponse = {
-                        "op" : "",
-                        "opd"  : "",
-                        "answer"   : "",
-                        "fn"       : ""
-                    };*/
-               });
+					   /* $scope.nlpResponse = {
+							"op" : "",
+							"opd"  : "",
+							"answer"   : "",
+							"fn"       : ""
+						};*/
+				   });
+			   }else{
+				   $scope.faq = {
+					   "faqKey": null,
+					   "faqName": null,
+					   "created":null,
+					   "id": null,
+					   "slotCnt":0,
+					   "metaMsg":"Air",
+					   "updated": null,
+					   "weight":0,
+					   "metaMsgCatId": selectedNode.metaMsgCatId 
+				   };
+				   
+				   $scope.nlpResponse = {}
+			   }
 
 
                //$scope.category = selectedNode; 
@@ -234,9 +260,22 @@ angular.module('demoApp')
                     $scope.nlpengineDropdown = result.data ;
                });
                             
-               CoreService.callAPIGet('admin/faq/edit/cat/' + selectedNode.id ,function(result){
-                    $scope.category = result.data ;
-               });
+			   if(selectedNode.id){
+				   CoreService.callAPIGet('admin/faq/edit/cat/' + selectedNode.id ,function(result){
+						$scope.category = result.data ;
+				   });
+			   }else{
+				   $scope.category = { 
+						"catKey":null,
+						 "catName":null,
+						 "created":null,
+						 "id":null,
+						 "nlpEngineId":null,
+						 "parentMetaMsgCatId": selectedNode.parentMetaMsgCatId,
+						 //"updated":"2016-11-08 21:42:27",
+						 "weight":0
+				   }
+			   }
 
 
                //$scope.category = selectedNode; 
