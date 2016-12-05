@@ -392,7 +392,7 @@ app.config([
 app.run(function($rootScope, $http) {
 	//$rootScope._loginUrl = __env.userLoginUrl;
 	//$rootScope._logoutUrl = __env.userLogoutUrl;
-    $rootScope.apiServerUrl = 'http://192.168.0.108:8080/';
+    $rootScope.apiServerUrl = 'http://192.168.0.108:8080/' ;// '/ccbot/'; ;
 	$rootScope.enableDebugLog = true ; //__env.enableDebugLog;
 	//$rootScope.buildVersionNumber = __env.buildVersionNumber;
 

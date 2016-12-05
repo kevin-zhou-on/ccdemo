@@ -47,6 +47,7 @@ angular.module('demoApp')
       this.searchMode = false;
       this.searchtext = '';
       this.searching  = false;
+      this.pasteSource = '' ; //cut , copy
 					
        this.goFaqHome = function(){
           CoreService.callAPIGet('admin/faq/home',function(result){
@@ -90,16 +91,13 @@ angular.module('demoApp')
 
        this.selectNode = function(isback, node){
          if(node && node.id){
-             if(isback){
-                var last = $scope.breadcrumb[$scope.breadcrumb.length -1];
-                while(last.id != node.id){
-                    $scope.breadcrumb.pop();
-                    last = $scope.breadcrumb[$scope.breadcrumb.length -1];
-                }
-             }
+             CoreService.callAPIGet('admin/faq/path/' + node.id,function(result){
+                  $scope.breadcrumb = result.data;
+                  $scope.breadcrumb.unshift({ 'name' : 'Root', 'id' : ''});
+
+             });
 
              CoreService.callAPIGet('admin/faq/cat/' + node.id,function(result){
-             if(!isback) $scope.breadcrumb.push (node);
 
               $scope.items = {
                 "count" : result.data.length,
@@ -113,10 +111,31 @@ angular.module('demoApp')
          }
        }
 
-        this.drilldown = function(node){
+     this.drilldown = function(node){
             this.selectNode(false,node);
         }
 		
+ 
+     this.paste = function(){
+         if(!this.pasteSource) return ;
+
+         $copyRequest = {"selectedItems":["a","b","c"],"targetCatId":"abc"};
+
+          //cut, copy
+         CoreService.callAPIPost('admin/faq/' + this.pasteSource  ,
+                        faq,
+                          function(result){
+                             if(result.status == 'SUCCESS'){
+                                 that.refreshCurrentNode();
+                             }else{
+                                 alert('error occurred.');
+                             }
+                          }); 
+
+       
+
+     }
+
 		this.addCatDialog = function(ev){
 			var node = {id: null , type: 'c' , name: "" , parentMetaMsgCatId : $scope.breadcrumb[$scope.breadcrumb.length -1].id };
 			this.openFaqDialog(ev, node);
