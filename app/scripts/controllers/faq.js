@@ -28,7 +28,7 @@ angular.module('demoApp')
 		  $scope.limitOptions = [25, 50, 100];
 		  
 		  $scope.options = {
-			rowSelection: true,
+			rowSelection: false,
 			multiSelect: true,
 			autoSelect: false,
 			decapitate: false,
@@ -49,6 +49,8 @@ angular.module('demoApp')
       this.searching  = false;
       this.pasteSource = '' ; //cut , copy
 					
+      this.editMode = false;
+
        this.goFaqHome = function(){
           CoreService.callAPIGet('admin/faq/home',function(result){
                   $scope.breadcrumb = [{ 'name' : 'Root', 'id' : ''}];
@@ -63,6 +65,25 @@ angular.module('demoApp')
        };
 
       this.goFaqHome();
+
+      this.toggleEdit = function(b){
+         this.editMode = b;
+         $scope.options.rowSelection = b;
+         $scope.selected = [];
+         this.pasteSource = '';
+      };
+
+      this.cut = function(){
+         this.pasteSource = 'cut';
+      };
+
+      this.copy = function(){
+         this.pasteSource = 'copy';
+      };
+ 
+      this.remove = function(){
+         
+      };
 
       this.search = function(){
          if(!that.searchtext) return;
@@ -90,6 +111,7 @@ angular.module('demoApp')
        }
 
        this.selectNode = function(isback, node){
+        // this.toggleEdit(false);
          if(node && node.id){
              CoreService.callAPIGet('admin/faq/path/' + node.id,function(result){
                   $scope.breadcrumb = result.data;
@@ -116,21 +138,45 @@ angular.module('demoApp')
         }
 		
  
-     this.paste = function(){
+     this.paste = function(ev){
          if(!this.pasteSource) return ;
+         var targetCat =  $scope.breadcrumb[$scope.breadcrumb.length - 1];
+         var confirm = $mdDialog.confirm()
+          .title('')
+          .textContent('Please confirm you are going to ' + (this.pasteSource == 'copy' ? 'Copy/Paste' : 'Move') + ' ' + $scope.selected.length + ' items. \n target category : ' + targetCat.name )
+          .ariaLabel('')
+          .targetEvent(ev)
+          .ok('OK')
+          .cancel('Cancel');
 
-         $copyRequest = {"selectedItems":["a","b","c"],"targetCatId":"abc"};
+          $mdDialog.show(confirm).then(function() {
 
-          //cut, copy
-         CoreService.callAPIPost('admin/faq/' + this.pasteSource  ,
-                        faq,
-                          function(result){
-                             if(result.status == 'SUCCESS'){
-                                 that.refreshCurrentNode();
-                             }else{
-                                 alert('error occurred.');
-                             }
-                          }); 
+          var copyRequest = {}   ; //{"selectedItems":["a","b","c"],"targetCatId":"abc"};
+          var targetCatId = targetCat.id;
+          var selectedItems = [];
+          angular.forEach($scope.selected,function(value,key){
+              selectedItems.push(value.id);
+          });
+
+          copyRequest = {
+              "selectedItems" : selectedItems,
+              "targetCatId"   : targetCatId
+          };
+              //cut, copy
+          CoreService.callAPIPost('admin/faq/' + this.pasteSource  ,
+                              copyRequest,
+                              function(result){
+                                if(result.status == 'SUCCESS'){
+                                    that.refreshCurrentNode();
+                                }else{
+                                    alert('error occurred.');
+                                }
+                              }); 
+
+             
+          }, function() {
+              
+          });
 
        
 
@@ -189,6 +235,8 @@ angular.module('demoApp')
 		  
 		  $scope.logItem = function (item) {
 			console.log(item.name, 'was selected');
+      //var index = $scope.selected.indexOf(item);
+       $scope.selected.push({'id' : '3E9F8C9E-2EE6-7D2F-79C7-47BD8E327DA6'});
 		  };
 		  
 		  $scope.logOrder = function (order) {

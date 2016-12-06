@@ -43,11 +43,46 @@
           <md-progress-linear md-mode="indeterminate" ng-if="ctrl.searching"></md-progress-linear>
         </md-toolbar>
          
-        
+            
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="!ctrl.editMode">
+          
+          <div layout="row"  layout-align="center start" class="md-toolbar-tools" layout-wrap>
+           
+                      <md-button  class="md-raised"  ng-disabled="selected.length == 0"  ng-click="ctrl.cut()">
+                        <md-icon  md-font-icon="fa fa-cut"></md-icon>
+                        Cut
+                      </md-button>
+
+                      <md-button  class="md-raised"   ng-disabled="selected.length == 0" ng-click="ctrl.copy()">
+                        <md-icon  md-font-icon="fa fa-copy"></md-icon>
+                        Copy
+                      </md-button>
+
+                      <md-button  class="md-raised"   ng-disabled="!ctrl.pasteSource" ng-click="ctrl.paste(ev)">
+                        <md-icon  md-font-icon="fa fa-paste"></md-icon>
+                        Paste
+                      </md-button>
+
+                      <md-button  class="md-raised"   ng-disabled="selected.length == 0" ng-click="ctrl.remove()">
+                        <md-icon  md-font-icon="fa fa-remove"></md-icon>
+                        Delete
+                      </md-button>
+
+                          
+            
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="ctrl.toggleEdit(false)">
+              <md-icon>close</md-icon>
+            </md-button>
+          </div>
+          <div layout="row" >
+          <div style='margin-left : 20px'> Selected : {{selected.length}} </div>
+          </div>
+        </md-toolbar>   
       
  
   
-        <md-toolbar hide-gt-xs ng-hide="ctrl.searchMode">
+        <md-toolbar hide-gt-xs ng-hide="ctrl.searchMode || ctrl.editMode">
 
   
 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
@@ -95,7 +130,7 @@
     </section>
    
         </md-toolbar>
-        <md-toolbar hide-xs  ng-hide="ctrl.searchMode">
+        <md-toolbar hide-xs  ng-hide="ctrl.searchMode || ctrl.editMode">
 
            <section layout="row"   layout-align="center center" style="max-height:80px">
             <md-button aria-label="Go Back" ng-click="ctrl.goback()">
@@ -111,49 +146,12 @@
                     Add FAQ
                 </md-button>
  
-             <div class="menu-demo-container" flex layout-align="center center" layout="column">
-            <md-menu>
-                  <md-button aria-label="Open phone interactions menu" class="" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
-                    <md-icon md-menu-origin="" md-svg-icon="call:dialpad"></md-icon>   
-                    Edit 
-                  </md-button>
-                  <md-menu-content >
-                    <md-menu-item>
-                      <md-button ng-click="">
-                        <md-icon  md-font-icon="fa fa-cut"></md-icon>
-                        Cut
-                      </md-button>
-                    </md-menu-item>   
-                    <md-menu-item>
-                      <md-button disabled="" ng-click="ctrl.checkVoicemail()">
-                        <md-icon  md-font-icon="fa fa-copy"></md-icon>
-                        Copy
-                      </md-button>
-                    </md-menu-item>
+               <md-button class="md-raised" aria-label="Edit" ng-click="ctrl.toggleEdit(true)">
+                    Edit
+                </md-button>
 
-                <md-menu-item class="">
-                                <md-button disabled="disabled" ng-click="">
-
-                                    <md-icon  md-font-icon="fa fa-paste"></md-icon>
-                                  Paste
-                                  
-                                </md-button>
-                              </md-menu-item>			        
-
-
-                    <md-menu-divider></md-menu-divider>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.toggleNotifications()">
-                        <md-icon  md-font-icon="fa fa-remove"></md-icon>
-                          Remove
-                      </md-button>
-                    </md-menu-item>  
-
-                  </md-menu-content>
-                </md-menu>
-
-                  </div>
-
+          
+               <div flex></div>
                <md-button class="md-raised md-small md-warn" ng-click="ctrl.searchMode = true;ctrl.searchtext = ''" aria-label="Search"><md-icon  md-font-icon="fa fa-search"></md-icon>
                     Search
                 </md-button>
@@ -193,7 +191,7 @@
               </tr>
             </thead>
             <tbody md-body>
-              <tr md-row md-select="row" md-on-select="logItem" md-auto-select="options.autoSelect" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+              <tr md-row md-select="row" md-select-id='id' md-on-select="logItem" md-auto-select="options.autoSelect" ng-repeat="row in items.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                 <td md-cell>
                  <!-- <md-icon
                 md-svg-icon="images/icons/ic_insert_drive_file.svg"
@@ -221,6 +219,7 @@
         <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{items.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
 
         </md-content>
+        {{selected}}
       </md-card>
  
   </md-content>
