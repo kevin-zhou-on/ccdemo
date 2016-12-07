@@ -139,11 +139,11 @@ angular.module('demoApp')
 		
  
      this.paste = function(ev){
-         if(!this.pasteSource) return ;
+         if(!that.pasteSource) return ;
          var targetCat =  $scope.breadcrumb[$scope.breadcrumb.length - 1];
          var confirm = $mdDialog.confirm()
           .title('')
-          .textContent('Please confirm you are going to ' + (this.pasteSource == 'copy' ? 'Copy/Paste' : 'Move') + ' ' + $scope.selected.length + ' items. \n target category : ' + targetCat.name )
+          .textContent('Please confirm you are going to ' + (that.pasteSource == 'copy' ? 'Copy/Paste' : 'Move') + ' ' + $scope.selected.length + ' items. \n target category : ' + targetCat.name )
           .ariaLabel('')
           .targetEvent(ev)
           .ok('OK')
@@ -155,7 +155,7 @@ angular.module('demoApp')
           var targetCatId = targetCat.id;
           var selectedItems = [];
           angular.forEach($scope.selected,function(value,key){
-              selectedItems.push(value.id);
+              selectedItems.push(value);
           });
 
           copyRequest = {
@@ -163,15 +163,20 @@ angular.module('demoApp')
               "targetCatId"   : targetCatId
           };
               //cut, copy
-          CoreService.callAPIPost('admin/faq/' + this.pasteSource  ,
+          CoreService.callAPIPost('admin/faq/' + that.pasteSource  ,
                               copyRequest,
                               function(result){
-                                if(result.status == 'SUCCESS'){
+                                    that.toggleEdit(false);
                                     that.refreshCurrentNode();
-                                }else{
+                                
+                              },
+                              function(result,status){
+                                
                                     alert('error occurred.');
-                                }
-                              }); 
+                                
+                              }
+                              
+                              ); 
 
              
           }, function() {
@@ -234,9 +239,18 @@ angular.module('demoApp')
   
 		  
 		  $scope.logItem = function (item) {
-			console.log(item.name, 'was selected');
-      //var index = $scope.selected.indexOf(item);
-       $scope.selected.push({'id' : '3E9F8C9E-2EE6-7D2F-79C7-47BD8E327DA6'});
+		    //	console.log(item.name, 'was selected');
+        //var index = $scope.selected.indexOf(item);
+        //  $scope.selected.push({'id' : '3E9F8C9E-2EE6-7D2F-79C7-47BD8E327DA6'});
+
+        if(item.type != 'c') return;
+        CoreService.callAPIGet('admin/faq/selectCat/' + item.id ,function(result){
+          angular.forEach(result.data,function(value,key){
+              $scope.selected.push(value);
+          });
+           
+        });
+
 		  };
 		  
 		  $scope.logOrder = function (order) {
