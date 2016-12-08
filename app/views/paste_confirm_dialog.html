@@ -1,0 +1,42 @@
+<md-dialog aria-label="Confirmation">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Confirmation</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <strong>The following items will be {{ copyRequest.pasteSource == 'copy' ? 'copied over' : 'cut and pasted'}}.</strong>
+        <p>Destination :  {{copyRequest.targetCat.name}}</p>
+        <p>
+             <!-- {{treeModel | json}}-->
+             <div
+                    data-angular-treeview="true"
+                    data-tree-id="faq"
+                    data-tree-view="treeModel"
+                    data-node-id="id"
+                    data-node-label="node.name"
+                    data-node-children="children" >
+              </div>
+        </p>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+      <md-button ng-click="ok()">
+       OK
+      </md-button>
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

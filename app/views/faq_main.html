@@ -58,7 +58,7 @@
                         Copy
                       </md-button>
 
-                      <md-button  class="md-raised"   ng-disabled="!ctrl.pasteSource" ng-click="ctrl.paste(ev)">
+                      <md-button  class="md-raised"   ng-disabled="!ctrl.pasteSource" ng-click="ctrl.pastePrompt(ev)">
                         <md-icon  md-font-icon="fa fa-paste"></md-icon>
                         Paste
                       </md-button>
@@ -219,7 +219,7 @@
         <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{items.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
 
         </md-content>
-        {{selected}}
+       
       </md-card>
  
   </md-content>

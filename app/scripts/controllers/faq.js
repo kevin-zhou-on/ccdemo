@@ -8,6 +8,51 @@
  * Controller of the demoApp
  */
 angular.module('demoApp')
+   .directive('treeView',['$compile', function($compile){
+          return {
+             restrict : 'A',
+             link : function (scope,element, attrs){
+               var treeId = attrs.treeId;
+               var treeModel = attrs.treeView;
+               var nodeId = attrs.nodeId || 'id';
+	             //node label
+				          var nodeLabel = attrs.nodeLabel || 'label';
+
+		        		//children
+				       var nodeChildren = attrs.children || 'children';
+
+                var template =
+                  '<ul>' +
+                    '<li data-ng-repeat="node in ' + treeModel + '">' +
+                      '<i class="collapsed" data-ng-show="node.' + nodeChildren + '.length && node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
+                      '<i class="expanded" data-ng-show="node.' + nodeChildren + '.length && !node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
+                      '<i class="normal" data-ng-hide="node.' + nodeChildren + '.length"></i> ' +
+                      '<i class="fa fa-folder-open" style="color:rgb(2,136,209);" data-ng-if="node.node.type == \'c\'" aria-hidden="true"></i> ' +
+                      '<i class="fa fa-file"  style="color:rgb(2,136,209);"  data-ng-if="node.node.type == \'f\'" aria-hidden="true"></i> ' +
+                      '<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectNodeLabel(node)">{{node.' + nodeLabel + '}}</span>' +
+                      '<div data-ng-hide="node.collapsed" data-tree-id="' + treeId + '" data-tree-view="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +
+                    '</li>' +
+                  '</ul>';
+
+                    //check tree id, tree model
+                     if( treeId && treeModel ) {
+
+                        //root node
+                        if( attrs.angularTreeview ) {
+                        
+                          //create tree object if not exists
+                          scope[treeId] = scope[treeId] || {};
+
+                        }
+
+                        //Rendering template.
+                        element.html('').append( $compile( template )( scope ) );
+                      }                  
+
+             }
+          };
+     }
+   ])
 
     .controller('FaqCtrl', [
         '$scope',
@@ -137,31 +182,44 @@ angular.module('demoApp')
             this.selectNode(false,node);
         }
 		
- 
-     this.paste = function(ev){
+     this.pastePrompt = function(ev){
          if(!that.pasteSource) return ;
          var targetCat =  $scope.breadcrumb[$scope.breadcrumb.length - 1];
-         var confirm = $mdDialog.confirm()
-          .title('')
-          .textContent('Please confirm you are going to ' + (that.pasteSource == 'copy' ? 'Copy/Paste' : 'Move') + ' ' + $scope.selected.length + ' items. \n target category : ' + targetCat.name )
-          .ariaLabel('')
-          .targetEvent(ev)
-          .ok('OK')
-          .cancel('Cancel');
+          
+         var targetCatId = targetCat.id;
+         var selectedItems = [];
+         angular.forEach($scope.selected,function(value,key){
+                    selectedItems.push(value);
+         });
 
-          $mdDialog.show(confirm).then(function() {
+         var copyRequest = {
+                    "selectedItems" : selectedItems,
+                    "targetCatId"   : targetCatId,
+                    "pasteSource"   : that.pasteSource,
+                    "targetCat"     : targetCat
+         };
 
-          var copyRequest = {}   ; //{"selectedItems":["a","b","c"],"targetCatId":"abc"};
-          var targetCatId = targetCat.id;
-          var selectedItems = [];
-          angular.forEach($scope.selected,function(value,key){
-              selectedItems.push(value);
-          });
+        $mdDialog.show({
+                  controller: DialogControllerPaste,
+                  templateUrl: 'views/paste_confirm_dialog.html',
+                  parent: angular.element(document.body),
+                  targetEvent: ev,
+                  clickOutsideToClose:true,
+                  locals : {copyRequest : copyRequest},
+                  fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                  if ('ok' == answer)
+                    that.paste(copyRequest);
+                }, function() {
+                   
+                });         
 
-          copyRequest = {
-              "selectedItems" : selectedItems,
-              "targetCatId"   : targetCatId
-          };
+     };
+
+     this.paste = function(copyRequest){
+         if(!that.pasteSource) return ;
+       
               //cut, copy
           CoreService.callAPIPost('admin/faq/' + that.pasteSource  ,
                               copyRequest,
@@ -176,12 +234,8 @@ angular.module('demoApp')
                                 
                               }
                               
-                              ); 
+           ); 
 
-             
-          }, function() {
-              
-          });
 
        
 
@@ -400,6 +454,77 @@ angular.module('demoApp')
 
                         
                     };
-                  }            
+                  }       ; 
+
+       function DialogControllerPaste($scope, $mdDialog, copyRequest) {
+          $scope.copyRequest = copyRequest;
+          var pctrl =  this;          
+
+         
+
+          this.sort = function(copyRequest){
+              var r0 = [];
+              var clonedselected = [];
+              copyRequest.selectedItems.forEach(function(element){
+                  var treeNode = {'node' : element,
+                                  'children' : []  ,
+                                   'v' : false };
+                  if(!pctrl.findParent(element,copyRequest.selectedItems)){
+                     treeNode.v = true;
+                     r0.push(treeNode);
+                  }else{
+                     clonedselected.push(treeNode);
+                  }
+              }); 
+
+              var buildTree = function(treeNode){
+                  clonedselected.forEach(function(element){
+                      if(element.v) return;
+                      if(element.node.parentId == treeNode.node.id) {
+                        treeNode.children.push(element);
+                        element.v = true;
+                      }
+                  });
+
+                  var i ;
+                  for(i = 0; i< treeNode.children.length; i++){
+                     buildTree(treeNode.children[i]);
+                  }
+              };
+
+              var index;
+              for(index=0; index < r0.length; index ++){
+                  buildTree(r0[index]);
+              }
+
+              return r0;
+          }; 
+ 
+          this.findParent = function(node, list){
+             var found = null;
+             list.forEach(function(element) {
+               if(element.id == node.parentId){
+                   found = element;
+               }
+             }, this);
+
+             return found;
+          }; 
+
+          $scope.treeModel = this.sort(copyRequest);
+
+          $scope.ok = function() {
+                       $mdDialog.hide('ok');
+                   };
+
+         $scope.cancel = function() {
+                       $mdDialog.cancel();
+                    };
+
+               
+        }       ;
+ 
+
+
 	   }
     ]);
